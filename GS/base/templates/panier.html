@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Panier - GSAN{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Votre Panier</h2>
+    
+    {% if cart_items %}
+        <div class="card bg-dark text-white mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Prix unitaire</th>
+                                <th>Quantité</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                            <tr>
+                                <td>{{ item.produit.nom }}</td>
+                                <td>{{ item.produit.prix_unitaire }} €</td>
+                                <td>
+                                    <form method="POST" action="{% url 'update_cart' item.produit.id %}" class="d-flex align-items-center">
+                                        {% csrf_token %}
+                                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control form-control-sm" style="width: 70px;">
+                                        <button type="submit" class="btn btn-sm btn-outline-light ms-2">✓</button>
+                                    </form>
+                                </td>
+                                <td>{{ item.total }} €</td>
+                                <td>
+                                    <form method="POST" action="{% url 'remove_from_cart' item.produit.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                <td colspan="2"><strong>{{ total }} €</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="d-grid gap-2 mt-4">
+                    <a href="{% url 'commander' %}" class="btn btn-primary btn-lg">
+                        Passer la commande
+                    </a>
+                    <a href="{% url 'produits' %}" class="btn btn-secondary">
+                        Continuer vos achats
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            Votre panier est vide. <a href="{% url 'produits' %}">Continuer vos achats</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %} 

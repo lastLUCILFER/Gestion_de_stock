@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Categories - GSAN{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Categories</h1>
+    
+    <div class="row">
+        {% for categorie in categories %}
+        <div class="col-md-6 mb-4">
+            <div class="card bg-dark text-white">
+                <div class="card-header bg-primary">
+                    <h3 class="card-title mb-0">{{ categorie.nom }}</h3>
+                </div>
+                <div class="card-body">
+                    {% if categorie.description %}
+                    <p class="card-text">{{ categorie.description }}</p>
+                    {% endif %}
+                    
+                    <h4 class="mt-4">Products in this category:</h4>
+                    <div class="list-group">
+                        {% for produit in categorie.produit_set.all %}
+                        <a href="{% url 'Product_Details' produit.id %}" class="list-group-item list-group-item-action bg-dark text-white text-decoration-none">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {% if produit.image %}
+                                        <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" class="img-fluid rounded" style="max-height: 150px; width: auto;">
+                                    {% else %}
+                                        <img src="https://via.placeholder.com/150" alt="No image available" class="img-fluid rounded">
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{ produit.nom }}</h5>
+                                        <small>{{ produit.prix_unitaire }} €</small>
+                                    </div>
+                                    <p class="mb-1">{{ produit.description|truncatewords:20 }}</p>
+                                    <small>Stock: {{ produit.quantite_en_stock }}</small>
+                                </div>
+                            </div>
+                        </a>
+                        {% empty %}
+                        <p class="text-muted">No products in this category yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-muted">No categories available.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

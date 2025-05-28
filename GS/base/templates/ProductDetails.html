@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Product Details - {{ produit.nom }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">{{ produit.nom }}</h1>
+
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-4">
+            {% if produit.image %}
+                <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" class="img-fluid rounded" style="max-height: 400px; object-fit: cover;">
+            {% else %}
+                <img src="{% static 'images/no-image.png' %}" alt="No image" class="img-fluid rounded">
+            {% endif %}
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-md-8">
+            <h3>Details</h3>
+            <p><strong>Description:</strong> {{ produit.description }}</p>
+            <p><strong>Prix:</strong> {{ produit.prix_unitaire }} USD</p>
+            <p><strong>Stock:</strong> {{ produit.quantite_en_stock }}</p>
+            <p><strong>Top speed:</strong> {{ produit.seuil_minimum }} km/h</p>
+            <p><strong>Catégorie:</strong> {{ produit.categorie }}</p>
+            <p><strong>Fournisseur:</strong> {{ produit.fournisseur }}</p>
+
+            <!-- Example: Add to Cart Button -->
+            <form method="POST" action="{% url 'add_to_cart' produit.id %}" class="mb-4">
+                {% csrf_token %}
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <label for="quantity" class="form-label">Quantité:</label>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ produit.quantite_en_stock }}" class="form-control" style="width: 100px;">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            Ajouter au panier
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="{% url 'produits' %}" class="btn btn-primary">Retour à la liste</a>
+    </div>
+</div>
+{% endblock %}

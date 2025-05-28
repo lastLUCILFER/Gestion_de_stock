@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - GSAN{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+   
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                <div class="carousel-inner">
+                    {% for product in carousel_products %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <a href="{% url 'Product_Details' idprod=product.id %}" class="text-decoration-none">
+                            <div class="card bg-dark text-white">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" class="d-block w-100" alt="{{ product.nom }}" style="height: 400px; object-fit: cover;">
+                                {% else %}
+                                    <div class="d-block w-100 bg-secondary" style="height: 400px; display: flex; align-items: center; justify-content: center;">
+                                        <span class="text-white">No image available</span>
+                                    </div>
+                                {% endif %}
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h3>{{ product.nom }}</h3>
+                                    <p>{{ product.prix_unitaire }} €</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Products Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="text-white mb-4">New Products</h2>
+        </div>
+        {% for product in new_products %}
+        <div class="col-md-3 mb-4">
+            <a href="{% url 'Product_Details' idprod=product.id %}" class="text-decoration-none">
+                <div class="card h-100 text-dark">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.nom }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="text-muted text-center py-5" style="background:#f0f0f0;">No image available</div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.nom }}</h5>
+                        <p class="card-text">{{ product.description|truncatewords:10 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="mb-0"><strong>Price:</strong> {{ product.prix_unitaire }} €</p>
+                            <p class="mb-0"><strong>Stock:</strong> {{ product.quantite_en_stock }}</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Quick Links -->
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Products</h5>
+                    <p class="card-text">Browse our collection of products</p>
+                    <a href="{% url 'produits' %}" class="btn btn-primary">View Products</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Cart</h5>
+                    <p class="card-text">View your shopping cart</p>
+                    <a href="{% url 'panier' %}" class="btn btn-primary">View Cart</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Orders</h5>
+                    <p class="card-text">Track your orders</p>
+                    <a href="{% url 'commander' %}" class="btn btn-primary">View Orders</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

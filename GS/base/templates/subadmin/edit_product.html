@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Modifier le Produit</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom</label>
+                            <input type="text" class="form-control" id="nom" name="nom" value="{{ product.nom }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" required>{{ product.description }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prix_unitaire" class="form-label">Prix Unitaire</label>
+                            <input type="number" class="form-control" id="prix_unitaire" name="prix_unitaire" value="{{ product.prix_unitaire }}" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantite_en_stock" class="form-label">Quantité en Stock</label>
+                            <input type="number" class="form-control" id="quantite_en_stock" name="quantite_en_stock" value="{{ product.quantite_en_stock }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="seuil_minimum" class="form-label">Seuil Minimum</label>
+                            <input type="number" class="form-control" id="seuil_minimum" name="seuil_minimum" value="{{ product.seuil_minimum }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categorie" class="form-label">Catégorie</label>
+                            <select class="form-select" id="categorie" name="categorie" required>
+                                <option value="">Sélectionner une catégorie</option>
+                                {% for category in categories %}
+                                <option value="{{ category.id }}" {% if category.id == product.categorie.id %}selected{% endif %}>{{ category.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fournisseur" class="form-label">Fournisseur</label>
+                            <select class="form-select" id="fournisseur" name="fournisseur" required>
+                                <option value="">Sélectionner un fournisseur</option>
+                                {% for supplier in suppliers %}
+                                <option value="{{ supplier.id }}" {% if supplier.id == product.fournisseur.id %}selected{% endif %}>{{ supplier.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Image</label>
+                            {% if product.image %}
+                            <div class="mb-2">
+                                <img src="{{ product.image.url }}" alt="{{ product.nom }}" class="img-thumbnail" style="max-height: 200px;">
+                            </div>
+                            {% endif %}
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                            <small class="text-muted">Laissez vide pour conserver l'image actuelle</small>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Enregistrer les Modifications</button>
+                            <a href="{% url 'subadmin_dashboard' %}" class="btn btn-secondary">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Confirmation - GSAN{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card bg-dark text-white">
+        <div class="card-header">
+            <h2 class="mb-0">Commande confirmée!</h2>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-success">
+                <h4 class="alert-heading">Merci pour votre commande!</h4>
+                <p>Votre commande #{{ commande.id }} a été enregistrée avec succès.</p>
+            </div>
+
+            <h4 class="mt-4">Détails de la commande:</h4>
+            <div class="table-responsive">
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th>Prix unitaire</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for detail in details %}
+                        <tr>
+                            <td>{{ detail.produit.nom }}</td>
+                            <td>{{ detail.quantite }}</td>
+                            <td>{{ detail.produit.prix_unitaire }} €</td>
+                            <td>{{ detail.prix_total }} €</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                            <td><strong>{{ total }} €</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="mt-4">
+                <h4>Informations de livraison:</h4>
+                <p>
+                    <strong>Client:</strong> {{ commande.client.nom }}<br>
+                    <strong>Adresse:</strong> {{ commande.client.adresse }}<br>
+                    <strong>Téléphone:</strong> {{ commande.client.telephone }}<br>
+                    <strong>Email:</strong> {{ commande.client.email }}
+                </p>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+                <a href="{% url 'home' %}" class="btn btn-primary">
+                    Retour à l'accueil
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

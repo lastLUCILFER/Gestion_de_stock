@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Commander - GSAN{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Confirmation de commande</h2>
+    
+    {% if cart_items %}
+        <div class="card bg-dark text-white mb-4">
+            <div class="card-header">
+                <h4>Récapitulatif de votre commande</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Quantité</th>
+                                <th>Prix unitaire</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                            <tr>
+                                <td>{{ item.produit.nom }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.produit.prix_unitaire }} €</td>
+                                <td>{{ item.total }} €</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                <td><strong>{{ total }} €</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <form method="POST" class="mt-4">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            Confirmer la commande
+                        </button>
+                        <a href="{% url 'panier' %}" class="btn btn-secondary">
+                            Retour au panier
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            Votre panier est vide. <a href="{% url 'produits' %}">Continuer vos achats</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %} 

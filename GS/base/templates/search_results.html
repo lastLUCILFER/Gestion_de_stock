@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Recherche - GSAN{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">
+        {% if search_performed %}
+            Résultats de recherche pour "{{ query }}"
+        {% else %}
+            Recherche de produits
+        {% endif %}
+    </h2>
+
+    <!-- Search Form -->
+    <div class="row mb-4">
+        <div class="col-md-6 mx-auto">
+            <form method="GET" action="{% url 'search_products' %}" class="d-flex">
+                <input type="search" name="q" class="form-control me-2" placeholder="Rechercher un produit..." value="{{ query }}">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </form>
+        </div>
+    </div>
+
+    {% if search_performed %}
+        {% if products %}
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for product in products %}
+                    <div class="col">
+                        <div class="card h-100 bg-dark text-white">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.nom }}" style="height: 200px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'images/no-image.png' %}" class="card-img-top" alt="No image" style="height: 200px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.nom }}</h5>
+                                <p class="card-text">{{ product.description|truncatewords:20 }}</p>
+                                <p class="card-text"><strong>Prix:</strong> {{ product.prix_unitaire }} €</p>
+                                <p class="card-text"><strong>Catégorie:</strong> {{ product.categorie.nom }}</p>
+                                <a href="{% url 'Product_Details' product.id %}" class="btn btn-primary">Voir détails</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                Aucun produit trouvé pour "{{ query }}". Essayez avec d'autres termes de recherche.
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %} 

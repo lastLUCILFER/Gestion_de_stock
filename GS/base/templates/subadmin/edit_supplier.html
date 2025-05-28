@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card bg-dark text-white">
+                <div class="card-header bg-primary">
+                    <h4 class="mb-0">Modifier le Fournisseur</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom</label>
+                            <input type="text" class="form-control bg-dark text-white border-secondary" id="nom" name="nom" value="{{ supplier.nom }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control bg-dark text-white border-secondary" id="email" name="email" value="{{ supplier.email }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telephone" class="form-label">Téléphone</label>
+                            <input type="tel" class="form-control bg-dark text-white border-secondary" id="telephone" name="telephone" value="{{ supplier.telephone }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adresse" class="form-label">Adresse</label>
+                            <textarea class="form-control bg-dark text-white border-secondary" id="adresse" name="adresse" rows="3" required>{{ supplier.adresse }}</textarea>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Enregistrer les Modifications</button>
+                            <a href="{% url 'subadmin_dashboard' %}" class="btn btn-secondary">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .form-control {
+        background-color: #2b3035;
+        border-color: #495057;
+        color: #ffffff;
+    }
+    .form-control:focus {
+        background-color: #2b3035;
+        border-color: #0d6efd;
+        color: #ffffff;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    .form-label {
+        color: #ffffff;
+    }
+</style>
+{% endblock %} 

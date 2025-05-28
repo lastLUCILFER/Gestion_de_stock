@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Products List - GSAN{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Products available</h1>
+
+    <div class="row">
+        {% for pr in products %}
+            <div class="col-md-4 mb-4">
+                <a href="{% url 'Product_Details' idprod=pr.id %}" class="text-decoration-none">
+                    <div class="card h-100 text-dark">
+                        {% if pr.image %}
+                            <img src="{{ pr.image.url }}" alt="{{ pr.nom }}" class="card-img-top" style="max-height: 200px; object-fit: cover;">
+                        {% else %}
+                            <div class="text-muted text-center py-5" style="background:#f0f0f0;">No image available</div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ pr.nom }}</h5>
+                            <p class="card-text">{{ pr.description|truncatewords:20 }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="mb-0"><strong>Price:</strong> {{ pr.prix_unitaire }} €</p>
+                                <p class="mb-0"><strong>Stock:</strong> {{ pr.quantite_en_stock }}</p>
+                            </div>
+                            <div class="mt-2">
+                                <small class="text-muted">Category: {{ pr.categorie.nom }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-muted">No products found.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
